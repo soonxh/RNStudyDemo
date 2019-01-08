@@ -11,40 +11,7 @@ export default class HomeItem extends Component<Props>{
 
     render() {
         return(
-            <FadeInView style={styles.container}>
-                <Image style={styles.imageView} source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 64, height: 64}} />
-                <Text style={styles.TextView}>{this.props.txt}</Text>
-            </FadeInView>
-        );
-    }
-}
-
-class FadeInView extends React.Component{
-    state = {
-        fadeAnim:new Animated.Value(0),
-    }
-
-    componentDidMount() {
-        Animated.timing(
-            this.state.fadeAnim,
-            {
-                toValue:1,
-                duration:10000,
-            }
-        ).start();
-    }
-
-    render() {
-        let {fadeAnim} = this.state;
-        return (
-            <Animated.View
-                style={{
-                    ...this.props.style,
-                    opacity: fadeAnim,
-                }}
-            >
-                {this.props.children}
-            </Animated.View>
+           <View></View>
         );
     }
 }
