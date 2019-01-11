@@ -1,31 +1,67 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View,TextInput,TouchableHighlight,
     Alert,Image,ScrollView,FlatList,SectionList,Button} from 'react-native';
-import HomeItem from './HomeItem';
 import constants from "../Tool/constants";
+import HomeDetailVC from "../HomeDetailVC/HomeDetailVC"
+import NavigatorIOSView from '../Tool/NavigatorIOSView';
+import NavigationBar from '../Tool/NavigationBar'
 
 ///练习导航栏
 export default class HomeVC extends Component<Props> {
+
     constructor(props) {
         super(props)
         console.log('啦啦啦啦绿')
+        this.onPressFunc = this.onPress.bind(this)
+    }
+
+    onPress() {
+        // Alert.alert("你点击了按钮！");
+        this.props.navigator.push({
+            component: HomeDetailVC,
+            title: "详情",
+            passProps: { index: 2 },
+            translucent:false,
+            leftButtonTitle:'返回',
+            navigationBarHidden:true,
+            onLeftButtonPress:() => {this.props.navigator.pop()},  // 左边按钮点击事件
+        });
+
     }
 
     render() {
-        return(
-                <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false}>
-                        <TopView></TopView>
+            return (
+                <View style={{backgroundColor:'#fffff'}}>
+                    <NavigationBar title='首页' />
+                    <ScrollView style={{height:constants.screenH - 64 - 49, top:0}} showsVerticalScrollIndicator={false}>
+                        <TopView text='啦啦啦' onPressFunc={this.onPressFunc}></TopView>
                         <MiddleView></MiddleView>
                         <BottomView></BottomView>
-                </ScrollView>
-        );
-    }
+                    </ScrollView>
+                </View>
 
+            );
+    }
 }
+
 
 class TopView extends Component<props>{
 
+    constructor(props) {
+        super(props)
+        this.topViewOnPressFunc=this.props.onPressFunc
+        this.topText=this.props.text
+        this.state={
+            showText:true
+        }
+    }
+
     render(){
+
+        if (!this.state.showText) {
+            return null;
+        }
+
       return(
           <View style={styles.topViewContentView}>
               <Text style={styles.withdrawalText}>可提现金额</Text>
@@ -34,19 +70,8 @@ class TopView extends Component<props>{
               <View style={styles.buttonContainer}>
                   <View style={styles.withdrawalButton}>
                       <Button
-                          title={"提现"}
-                          onPress={() => {
-                              // Alert.alert("你点击了按钮！");
-                              this.props.navigator.push({
-                                  component: HomeVC,
-                                  title: "详情",
-                                  passProps: { index: 2 },
-                                  translucent:false,
-                                  leftButtonTitle:'返回',
-                                  onLeftButtonPress:() => {this.props.navigator.pop()},  // 左边按钮点击事件
-                              });
-                          }}
-
+                          title={this.topText}
+                          onPress={this.topViewOnPressFunc}
                       ></Button>
                   </View>
                   <View style={styles.spaceView}>
@@ -129,12 +154,6 @@ class BottomViewItem extends Component<props> {
 
 
 const styles = StyleSheet.create({
-    backGroundStyle:{
-        flex: 1,
-        justifyContent: 'flex-start',
-        backgroundColor: '#ededed'
-    },
-
    topViewContentView:{
        backgroundColor:'#1AABFF',
        height:180,
